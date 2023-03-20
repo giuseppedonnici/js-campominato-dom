@@ -94,21 +94,22 @@ play.addEventListener('click', function () {
         let gridElement = createElementWithAClass('div', className);
         gridElement.innerText = `${i}`; //Aggiungo ad ogni elemento il numero di iterazione
         gridElement.addEventListener('click', function () { //Aggiungo ad ogni elemento un event listener
-            
             let clickedNumber = parseInt(this.innerText);
-            if (bombs.includes(clickedNumber) || clickCounter.length === maximumAttempts) {
+            if (!bombs.includes(clickedNumber) && clickCounter.length < maximumAttempts) {
+                if (!clickCounter.includes(clickedNumber)) {
+                    clickCounter.push(clickedNumber)
+                    this.style.backgroundColor = "skyblue";
+                }
+            } else {
                 this.style.backgroundColor = "red";
                 console.log(`Partita finita! Il tuo punteggio è ${clickCounter.length}`);
-
-            } else {
-                clickCounter.push(1)
-                this.style.backgroundColor = "skyblue";
             }
             console.log(clickedNumber); // Al click di ogni elemento mostro in console il suo valore innerText
             console.log(clickCounter);
+
         });
         grid.append(gridElement); //Inserisco ogni elemento dentro la griglia
-        
+
     }
 });
 

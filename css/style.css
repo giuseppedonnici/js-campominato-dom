@@ -95,6 +95,10 @@ header {
     border: 1px solid white;
 }
 
+.red {
+    background-color: red;
+}
+
 .hidden {
     display: none;
 }
