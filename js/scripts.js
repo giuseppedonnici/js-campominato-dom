@@ -52,30 +52,51 @@ let grid = document.querySelector(".grid");
 // Aggiungo al bottone un event listener
 play.addEventListener('click', function () {
     // Al click creo la griglia solamente se non è già stata crea
-        const startText = document.querySelector('.start-game');
-        startText.classList.add('hidden');
-        grid.innerHTML = "";
-        let cellsNumber = 100;
-        let className = 'box-easy'
-        if (difficulty.value === '2') {
-            cellsNumber = 81;
-            className = 'box-medium';
-        } else if (difficulty.value === '3') {
-            cellsNumber = 49;
-            className = 'box-hard';
-        }
+    const startText = document.querySelector('.start-game');
+    startText.classList.add('hidden');
+    grid.innerHTML = "";
+    let cellsNumber;
+    let className;
+    bombs = [];
 
-        // Tramite il ciclo for gli faccio creare n elementi in base alla difficoltà
-        for (let i = 1; i <= cellsNumber; i++) {
-            let gridElement = createElementWithAClass('div', className);
-            gridElement.innerText = `${i}`; //Aggiungo ad ogni elemento il numero di iterazione
-            gridElement.addEventListener('click', function () { //Aggiungo ad ogni elemento un event listener
-                let clickedNumber = parseInt(this.innerText);
-                this.style.backgroundColor = "skyblue"; // Al click di ogni elemento lo coloro di azzurro
-                console.log(clickedNumber); // Al click di ogni elemento mostro in console il suo valore innerText
-            });
-            grid.append(gridElement); //Inserisco ogni elemento dentro la griglia
-        }
+    const difficultyChoise = difficulty.value;
+    switch (difficultyChoise) {
+        case "1":
+            cellsNumber = 100;
+            className = 'box-easy'
+            generateBombs(cellsNumber);
+            console.log(bombs);
+            break;
+        case "2":
+            cellsNumber = 81;
+            className = 'box-medium'
+            generateBombs(cellsNumber);
+            console.log(bombs);
+            break;
+        case "3":
+            cellsNumber = 49;
+            className = 'box-hard'
+            generateBombs(cellsNumber);
+            console.log(bombs);
+            break;
+        default:
+            cellsNumber = 100;
+            className = 'box-easy'
+            generateBombs(cellsNumber);
+            console.log(bombs);
+    }
+
+    // Tramite il ciclo for gli faccio creare n elementi in base alla difficoltà
+    for (let i = 1; i <= cellsNumber; i++) {
+        let gridElement = createElementWithAClass('div', className);
+        gridElement.innerText = `${i}`; //Aggiungo ad ogni elemento il numero di iterazione
+        gridElement.addEventListener('click', function () { //Aggiungo ad ogni elemento un event listener
+            let clickedNumber = parseInt(this.innerText);
+            this.style.backgroundColor = "skyblue"; // Al click di ogni elemento lo coloro di azzurro
+            console.log(clickedNumber); // Al click di ogni elemento mostro in console il suo valore innerText
+        });
+        grid.append(gridElement); //Inserisco ogni elemento dentro la griglia
+    }
 });
 
 
@@ -90,6 +111,31 @@ function createElementWithAClass(elemento, classe) {
     let newItem = document.createElement(`${elemento}`);
     newItem.classList.add(`${classe}`);
     return newItem;
+}
+
+/**
+ * Descrizione: restituisce un numero casuale tra il valore minimo e massimo specificati (inclusi)
+ * @param {number} min 
+ * @param {number} max 
+ * @returns number
+ */
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+ * Descrizione: dato un range da un a un numero massimo la funzione genera 16 numeri casuali all'interno di quel range e restituisce un array nel quale non sono presenti numeri uguali
+ * @param {number} cellsNumber 
+ * @returns array di 16 numeri
+ */
+function generateBombs(cellsNumber) {
+    while (bombs.length < 16) {
+        let randomNumber = getRndInteger(1, cellsNumber);
+        if (!bombs.includes(randomNumber)) {
+            bombs.push(randomNumber);
+        }
+    }
+    return bombs;
 }
 
 
