@@ -86,16 +86,29 @@ play.addEventListener('click', function () {
             console.log(bombs);
     }
 
+    let maximumAttempts = cellsNumber - 16;
+    let clickCounter = [];
+
     // Tramite il ciclo for gli faccio creare n elementi in base alla difficoltà
     for (let i = 1; i <= cellsNumber; i++) {
         let gridElement = createElementWithAClass('div', className);
         gridElement.innerText = `${i}`; //Aggiungo ad ogni elemento il numero di iterazione
         gridElement.addEventListener('click', function () { //Aggiungo ad ogni elemento un event listener
+            
             let clickedNumber = parseInt(this.innerText);
-            this.style.backgroundColor = "skyblue"; // Al click di ogni elemento lo coloro di azzurro
+            if (bombs.includes(clickedNumber) || clickCounter.length === maximumAttempts) {
+                this.style.backgroundColor = "red";
+                console.log(`Partita finita! Il tuo punteggio è ${clickCounter.length}`);
+
+            } else {
+                clickCounter.push(1)
+                this.style.backgroundColor = "skyblue";
+            }
             console.log(clickedNumber); // Al click di ogni elemento mostro in console il suo valore innerText
+            console.log(clickCounter);
         });
         grid.append(gridElement); //Inserisco ogni elemento dentro la griglia
+        
     }
 });
 
